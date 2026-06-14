@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vishal Chouhan | Web Designer & Frontend Developer</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="icon" type="image/png" href="img/fevicon.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: Inter, sans-serif;
+            background: #060816;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 20%, #6d5cff55, transparent 30%),
+                radial-gradient(circle at 80% 20%, #00e5ff44, transparent 25%),
+                radial-gradient(circle at 50% 90%, #ff4ecd33, transparent 30%);
+            z-index: -3;
+        }
+
+        #canvas3d {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+        }
+
+        .container {
+            width: min(1180px, 90%);
+            margin: auto;
+        }
+
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(18px);
+            background: rgba(6, 8, 22, .65);
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        nav {
+            height: 76px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #00e5ff, #8f7bff, #ff4ecd);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+
+        nav a {
+            color: #dbe2ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        nav a:hover {
+            color: #00e5ff
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 120px 0 70px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 10px 18px;
+            border: 1px solid rgba(255, 255, 255, .18);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(16px);
+            margin-bottom: 24px;
+            color: #bfc9ff;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 110px);
+            line-height: .95;
+            font-weight: 900;
+            letter-spacing: -5px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #00e5ff, #8f7bff, #ff4ecd);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero h2 {
+            margin-top: 24px;
+            font-size: clamp(22px, 3vw, 38px);
+            font-weight: 600;
+            color: #e8ecff;
+        }
+
+        .hero p {
+            max-width: 740px;
+            margin: 24px auto 0;
+            color: #b8c0e0;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .btns {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 28px;
+            border-radius: 999px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 700;
+            transition: .35s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn.primary {
+            background: linear-gradient(90deg, #00e5ff, #8f7bff);
+            color: #050712;
+            box-shadow: 0 0 35px #00e5ff55;
+        }
+
+        .btn.secondary {
+            border: 1px solid rgba(255, 255, 255, .22);
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(16px);
+        }
+
+        .btn:hover {
+            transform: translateY(-6px) scale(1.03);
+        }
+
+        section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-size: clamp(34px, 5vw, 64px);
+            text-align: center;
+            margin-bottom: 55px;
+            letter-spacing: -2px;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .14);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 80px rgba(0, 0, 0, .35);
+        }
+
+        .about-card {
+            max-width: 900px;
+            margin: auto;
+            border-radius: 32px;
+            padding: 42px;
+            line-height: 1.9;
+            color: #d6ddff;
+            font-size: 18px;
+            transform-style: preserve-3d;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+        }
+
+        .skill {
+            min-height: 60px;
+            border-radius: 28px;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 18px;
+            transition: .35s;
+        }
+
+        .skill:hover {
+            transform: translateY(-10px) rotateX(10deg) rotateY(-10deg);
+            box-shadow: 0 0 45px #00e5ff44;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+        }
+
+        .card {
+            border-radius: 32px;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: .4s;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 55px rgba(0, 229, 255, .25);
+        }
+
+        .project-img {
+            height: 230px;
+            background:
+                linear-gradient(135deg, rgba(0, 229, 255, .25), rgba(255, 78, 205, .18)),
+                #10162d;
+            display: grid;
+            place-items: center;
+            font-size: 42px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .card-content {
+            padding: 28px;
+        }
+
+        .card-content h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .card-content p {
+            color: #b8c0e0;
+            line-height: 1.7;
+        }
+
+        .card-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 22px;
+            flex-wrap: wrap;
+        }
+
+        .small-btn {
+            padding: 11px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .09);
+            border: 1px solid rgba(255, 255, 255, .15);
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .figma-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .figma-card {
+            border-radius: 30px;
+            padding: 30px;
+            min-height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .figma-card::before {
+            content: "";
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(#00e5ff, #ff4ecd);
+            filter: blur(45px);
+            right: -40px;
+            top: -40px;
+            opacity: .45;
+        }
+
+        .figma-card h3 {
+            position: relative;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .resume-box {
+            border-radius: 36px;
+            padding: 55px;
+            text-align: center;
+            max-width: 820px;
+            margin: auto;
+        }
+
+        .resume-box h3 {
+            font-size: 32px;
+            margin-bottom: 18px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+        }
+
+        .contact-item {
+            padding: 26px;
+            line-height: 1.8;
+            border-radius: 26px;
+            text-align: center;
+        }
+
+        footer {
+            padding: 35px;
+            text-align: center;
+            color: #aeb8df;
+            border-top: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+        }
+
+        .contact-item {
+            padding: 30px;
+            border-radius: 26px;
+            text-align: center;
+            transition: .35s;
+        }
+
+        .contact-item i {
+            font-size: 38px;
+            margin-bottom: 18px;
+            display: block;
+
+            background: linear-gradient(135deg,
+                    #00e5ff,
+                    #8f7bff,
+                    #ff4ecd);
+
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .contact-item h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .contact-item p {
+            color: #b8c0e0;
+            word-break: break-word;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 45px rgba(0, 229, 255, .20);
+        }
+
+        .contact-item {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 260px;
+            transition: .35s;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 0 40px rgba(0, 229, 255, .18);
+        }
+
+        .contact-item p {
+            color: #b8c0e0;
+        }
+
+        .contact-item h3 {
+            color: #fff;
+        }
+
+        .cursor {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #00e5ff;
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        @media(max-width:768px) {
+            nav ul {
+                display: none
+            }
+
+            .hero h1 {
+                letter-spacing: -2px
+            }
+
+            .hero p {
+                font-size: 16px
+            }
+
+            section {
+                padding: 40px 0
+            }
+
+            .about-card,
+            .resume-box {
+                padding: 28px
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="canvas3d"></canvas>
+    <div class="cursor"></div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">VC</div>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#figma">Figma</a></li>
+                    <li><a href="#resume">Resume</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <span class="badge">Available for Web Design & Frontend Projects</span>
+            <h1>Vishal <span class="gradient-text">Chouhan</span></h1>
+            <h2>Web Designer | Frontend Developer</h2>
+            <p>
+                I create modern, responsive and visually engaging websites with clean frontend code,
+                smooth animations, premium UI and client-focused digital experiences.
+            </p>
+            <div class="btns">
+                <a href="#projects" class="btn primary">View Projects</a>
+                <a href="/doc/vishalchouhan-resume.pdf" class="btn secondary" target="_blank">View Resume</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title reveal">About Me</h2>
+            <div class="about-card glass reveal tilt">
+                I am a Web Designer and Front-End Developer passionate about creating modern, responsive, and
+                user-focused digital experiences. I specialise in designing clean interfaces and developing
+                high-performance websites using HTML, CSS, JavaScript, WordPress, and Figma. My goal is to build
+                websites that not only look premium but also deliver seamless performance across all devices.
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title reveal">Skills</h2>
+            <div class="skills-grid">
+                <div class="skill glass reveal">UI/UX Design</div>
+                <div class="skill glass reveal">Figma</div>
+                <div class="skill glass reveal">Prototyping</div>
+                <div class="skill glass reveal">HTML5</div>
+                <div class="skill glass reveal">CSS3</div>
+                <div class="skill glass reveal">PHP</div>
+                <div class="skill glass reveal">JavaScript</div>
+                <div class="skill glass reveal">Tailwind CSS</div>
+                <div class="skill glass reveal">Bootstrap</div>
+                <div class="skill glass reveal">WordPress</div>
+                <div class="skill glass reveal">AI Tools</div>
+                <div class="skill glass reveal">GitHub</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title reveal">Website Projects</h2>
+
+            <div class="projects-grid">
+
+                <div class="card glass reveal tilt">
+                    <div class="project-img">01</div>
+                    <div class="card-content">
+                        <h3>SEOBOOKLAB</h3>
+                        <p>Modern digital marketing website with clean UI, responsive design and conversion-focused user
+                            experience.</p>
+                        <div class="card-links">
+                            <a href="https://seobooklab.com/" class="small-btn">Live Website</a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card glass reveal tilt">
+                    <div class="project-img">02</div>
+                    <div class="card-content">
+                        <h3>Hair Transplant India</h3>
+                        <p>Modern hair transplant clinic website designed to build trust, showcase treatments and
+                            generate patient enquiries.</p>
+                        <div class="card-links">
+                            <a href="https://hairtransplant.in/" class="small-btn">Live Website</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card glass reveal tilt">
+                    <div class="project-img">03</div>
+                    <div class="card-content">
+                        <h3>A1 Scaffolding</h3>
+                        <p>Professional construction support website with modern design, service-focused sections and
+                            streamlined lead generation.</p>
+                        <div class="card-links">
+                            <a href="https://a1scaffolding.in/" class="small-btn">Live Website</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card glass reveal tilt">
+                    <div class="project-img">04</div>
+                    <div class="card-content">
+                        <h3>Plastic Surgery</h3>
+                        <p>Professional healthcare website crafted to highlight surgical procedures, patient care,
+                            specialist expertise and consultation booking services.</p>
+                        <div class="card-links">
+                            <a href="https://plasticsurgery.in/" class="small-btn">Live Website</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card glass reveal tilt">
+                    <div class="project-img">05</div>
+                    <div class="card-content">
+                        <h3>Finxus</h3>
+                        <p>Modern finance and wealth management platform featuring responsive design,
+                            professional service presentation and client-focused user experience.</p>
+                        <div class="card-links">
+                            <a href="https://finxus.com.au/" class="small-btn">Live Website</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card glass reveal tilt">
+                    <div class="project-img">06</div>
+                    <div class="card-content">
+                        <h3>Meadileaf</h3>
+                        <p>Modern healthcare and pharmacy website designed to provide a seamless patient experience with
+                            responsive design and premium user interface.
+                        </p>
+                        <div class="card-links">
+                            <a href="https://medileaf.com.au/" class="small-btn">Live Website</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="figma">
+        <div class="container">
+            <h2 class="section-title reveal">Figma <img src="/img/figma-icon.png"
+                    style="width: 35px; margin: left 17px;" alt="Figma Icon"></span>
+                Showcase</h2>
+
+            <div class="figma-grid">
+                <div class="figma-card glass reveal tilt">
+                    <h3>Wed UI</h3>
+                    <p>Premium wedding website designed to celebrate love, culture and timeless traditions with an
+                        elegant and immersive user experience.</p>
+                    <div class="card-links">
+                        <a href="https://www.figma.com/proto/NW7T9V7WnarNsjcjRNUeBu/wedingUI?node-id=666-12&p=f&m=draw&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1"
+                            class="small-btn">View Figma</a>
+                    </div>
+                </div>
+
+                <div class="figma-card glass reveal tilt">
+                    <h3>Bricknet Construction UI</h3>
+                    <p>Modern construction website featuring premium design, service-focused layouts, project showcase,
+                        client trust and strong lead generation elements.</p>
+                    <div class="card-links">
+                        <a href="https://www.figma.com/proto/YcFXGS5ptOU44156qEhvYR/Bricknet---Construction-Company-Website-UI-Design--Preview-?node-id=4539-40&m=draw&scaling=scale-down-width&content-scaling=fixed&page-id=3512%3A1574"
+                            class="small-btn">View Figma</a>
+                    </div>
+                </div>
+
+                <div class="figma-card glass reveal tilt">
+                    <h3>APIH UI</h3>
+                    <p>Modern property strategist website featuring investment-focused solutions, developer
+                        partnerships, market insights and seamless investor engagement.</p>
+                    <div class="card-links">
+                        <a href="https://www.figma.com/proto/hqH5JfCFzESC0k5TD7zLoE/Untitled?node-id=73-15&p=f&t=vAyGPiJezBrAz63J-0&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1"
+                            class="small-btn">View Figma</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="resume">
+        <div class="container">
+            <h2 class="section-title reveal">Resume</h2>
+            <div class="resume-box glass reveal tilt">
+                <h3>Vishal Chouhan Resume</h3>
+                <p>View or download my latest resume.</p>
+                <div class="btns">
+                    <a href="/doc/vishalchouhan-resume.pdf" target="_blank" class="btn primary">View Resume</a>
+                    <a href="/doc/vishalchouhan-resume.pdf" download class="btn secondary">Download Resume</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title reveal">Contact Me</h2>
+
+            <div class="contact-grid">
+
+                <!-- Email -->
+                <a href="mailto:VishalChouhan336@gmail.com" class="contact-item glass reveal">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email</h3>
+                    <p>VishalChouhan336@gmail.com</p>
+                </a>
+
+                <!-- Mobile -->
+                <a href="tel:+918233337719" class="contact-item glass reveal">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Mobile</h3>
+                    <p>+91 82333 37719</p>
+                </a>
+
+                <!-- GitHub -->
+                <a href="https://github.com/VishalChouhan-Dev" target="_blank" class="contact-item glass reveal">
+                    <i class="fab fa-github"></i>
+                    <h3>GitHub</h3>
+                    <p>github.com/VishalChouhan-Dev</p>
+                </a>
+
+            </div>
+        </div>
+    </section>
+    <footer>
+        © 2026 Vishal Chouhan. Web Designer & Front-End Developer. All Rights Reserved.
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+
+    <script>
+        /* Cursor */
+        const cursor = document.querySelector(".cursor");
+        document.addEventListener("mousemove", e => {
+            cursor.style.left = e.clientX + "px";
+            cursor.style.top = e.clientY + "px";
+        });
+
+        /* GSAP Intro */
+        gsap.from(".badge", { y: 30, opacity: 0, duration: 1 });
+        gsap.from(".hero h1", { y: 60, opacity: 0, duration: 1.1, delay: .2 });
+        gsap.from(".hero h2", { y: 40, opacity: 0, duration: 1, delay: .4 });
+        gsap.from(".hero p", { y: 30, opacity: 0, duration: 1, delay: .6 });
+        gsap.from(".btns", { y: 30, opacity: 0, duration: 1, delay: .8 });
+
+        /* Scroll Reveal */
+        gsap.registerPlugin(ScrollTrigger);
+        document.querySelectorAll(".reveal").forEach(el => {
+            gsap.to(el, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%"
+                }
+            });
+        });
+
+        /* 3D Tilt */
+        VanillaTilt.init(document.querySelectorAll(".tilt"), {
+            max: 14,
+            speed: 500,
+            glare: true,
+            "max-glare": .25
+        });
+
+        /* Three.js Background */
+        const canvas = document.getElementById("canvas3d");
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, .1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+        renderer.setSize(innerWidth, innerHeight);
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+        const group = new THREE.Group();
+        scene.add(group);
+
+        const geometry = new THREE.IcosahedronGeometry(1, 1);
+        const material = new THREE.MeshStandardMaterial({
+            color: 0x7b61ff,
+            wireframe: true,
+            transparent: true,
+            opacity: .45
+        });
+
+        for (let i = 0; i < 28; i++) {
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(
+                (Math.random() - .5) * 18,
+                (Math.random() - .5) * 12,
+                (Math.random() - .5) * 10
+            );
+            mesh.scale.setScalar(Math.random() * 1.3 + .3);
+            group.add(mesh);
+        }
+
+        const light1 = new THREE.PointLight(0x00e5ff, 2);
+        light1.position.set(5, 5, 5);
+        scene.add(light1);
+
+        const light2 = new THREE.PointLight(0xff4ecd, 2);
+        light2.position.set(-5, -4, 5);
+        scene.add(light2);
+
+        camera.position.z = 8;
+
+        let mouseX = 0;
+        let mouseY = 0;
+
+        document.addEventListener("mousemove", e => {
+            mouseX = (e.clientX / innerWidth - .5) * 2;
+            mouseY = (e.clientY / innerHeight - .5) * 2;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            group.rotation.y += .002;
+            group.rotation.x += .001;
+            camera.position.x += (mouseX - camera.position.x) * .03;
+            camera.position.y += (-mouseY - camera.position.y) * .03;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener("resize", () => {
+            camera.aspect = innerWidth / innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(innerWidth, innerHeight);
+        });
+    </script>
+
+</body>
+
+</html>
